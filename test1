@@ -1,0 +1,209 @@
+'''
+计算24点
+'''
+
+def _cal(a,b):  #输入两个数字，计算+-*/四则运算 结果放入字典里 https://www.cnblogs.com/mingmingming/p/11050495.html
+
+    temp={'+':a+b,'-':a-b,'*':a*b}    
+    if b!=0 and a!=0:
+        temp['/']=float(a)/b
+    return temp
+
+def init_set3(s1):  #把输入的列表项按排列组合扩张，去除重复项
+# '''
+# 如 [1,2,3,4]
+# 扩张为 [(4, 1, 2, 3), (1, 3, 2, 4), (3, 4, 1, 2), (1, 4, 2, 3), (4, 2, 3, 1), (2, 4, 1, 3), (4, 3, 1, 2), (2, 1, 3, 4), (3, 1, 4, 2), (3, 2, 4, 1), (1, 3, 4, 2), (1, 2, 4, 3), (2, 4, 3, 1), (3, 1, 2, 4), (4, 1, 3, 2), (2, 3, 1, 4), (4, 2, 1, 3), (1, 2, 3, 4), (1, 4, 3, 2), (3, 4, 2, 1), (2, 3, 4, 1), (4, 3, 2, 1), (3, 2, 1, 4), (2, 1, 4, 3)]
+# ret=list(permutations(s1))
+#        [(1, 2, 3, 4), (1, 2, 4, 3), (1, 3, 2, 4), (1, 3, 4, 2), (1, 4, 2, 3), (1, 4, 3, 2), (2, 1, 3, 4), (2, 1, 4, 3), (2, 3, 1, 4), (2, 3, 4, 1), (2, 4, 1, 3), (2,4, 3, 1), (3, 1, 2, 4), (3, 1, 4, 2), (3, 2, 1, 4), (3, 2, 4, 1), (3, 4, 1, 2), (3, 4, 2, 1), (4, 1, 2, 3), (4, 1, 3, 2), (4, 2, 1, 3), (4, 2, 3, 1), (4, 3, 1, 2), (4, 3, 2, 1)]
+
+
+# '''
+    ret = []
+    for i in s1:
+       s2 = s1.copy()
+       s2.remove(i)
+       for j in s2:
+           s3 = s2.copy()
+           s3.remove(j)
+           for k in s3:
+               s4 = s3.copy()
+               s4.remove(k)
+               for l in s4:
+                    ret.append((i, j, k, l))
+    # print ("ret=",ret)
+
+# 去除重复项
+    lit2 = list(set(ret))   
+    # print ("lit2=",lit2) 
+    return lit2
+
+# cal5() cal4() ... 针对5种模式计算24点的值
+# 
+
+def cal5(c):
+    # num=init_set3(c)
+    # print ('ret.append',num  )
+    # num=c
+    global  result
+    print ('pattern a?((b?c)?d)')
+    count=0
+    for i in iter(c):
+        temp1=_cal(i[1],i[2])
+        for k1 in temp1:
+            temp2=_cal(temp1[k1],i[3])
+            # print ('(a?b)c',temp1,temp2 )
+            for k2 in temp2:
+                temp3 = _cal(i[0],temp2[k2])
+                for k3 in temp3:
+                    if temp3[k3]==24:
+                        count=count+1
+                        print (('=============%d==============%d%s((%d%s%d)%s%d))=24') %(count,i[0],k3,i[1],k1,i[2],k2,i[3]))
+                        result.append((('%d%s((%d%s%d)%s%d))=24') %(i[0],k3,i[1],k1,i[2],k2,i[3])))                        
+
+def cal4(c):
+    # num=init_set3(c)
+    # print ('ret.append',num  )
+    # num=c
+
+    global  result
+    print ('pattern (a?(b?c))?d')
+    count=0
+    for i in iter(c):
+        # print ('source array',count, i  )
+        # count=count+1
+        temp1=_cal(i[1],i[2])
+        # print ('a?b',temp1 )
+        for k1 in temp1:
+            temp2=_cal(i[0],temp1[k1])
+            # print ('(a?b)c',temp1,temp2 )
+            for k2 in temp2:
+                temp3 =_cal(temp2[k2],i[3]) 
+                for k3 in temp3:
+                    if temp3[k3]==24:
+                        count=count+1
+                        print (('=============%d==============(%d%s(%d%s%d))%s%d=24') %(count,i[0],k2,i[1],k1,i[2],k3,i[3]))
+                        result.append((('(%d%s(%d%s%d))%s%d=24') %(i[0],k2,i[1],k1,i[2],k3,i[3])))                        
+
+
+def cal3(c):
+    # num=init_set3(c)
+    # print ('ret.append',num  )
+    # num=c
+    global  result
+    print ('pattern a?(b?(c?d))')
+    count=0
+    for i in iter(c):
+        # print ('source array',count, i  )
+        # count=count+1
+        temp1=_cal(i[2],i[3])
+        # print ('a?b',temp1 )
+        for k1 in temp1:
+            temp2=_cal(i[1],temp1[k1])
+            # print ('(a?b)c',temp1,temp2 )
+            for k2 in temp2:
+                temp3 =_cal(i[0],temp2[k2]) 
+                for k3 in temp3:
+                    if temp3[k3]==24:
+                        count=count+1
+                        print (('=============%d==============(%d%s(%d%s(%d%s%d))=24') %(count,i[0],k3,i[1],k2,i[2],k1,i[3]))
+                        result.append((('(%d%s(%d%s(%d%s%d))=24') %(i[0],k3,i[1],k2,i[2],k1,i[3])))                        
+
+
+def cal2(c):
+    # num=init_set3(c)
+    # print ('ret.append',num  )
+    # num=c
+    global  result
+    print ('pattern ((a?b)?c)?d')
+    count=0
+    for i in iter(c):
+        # print ('source array',count, i  )
+        # count=count+1
+        temp1=_cal(i[0],i[1])
+        # print ('a?b',temp1 )
+        for k1 in temp1:
+            temp2=_cal(temp1[k1],i[2])
+            # print ('(a?b)c',temp1,temp2 )
+            for k2 in temp2:
+                temp3 =_cal(temp2[k2],i[3]) 
+                for k3 in temp3:
+                    if temp3[k3]==24:
+                        count=count+1
+                        print (('=============%d==============((%d%s%d)%s%d)%s%d=24') %(count,i[0],k1,i[1],k2,i[2],k3,i[3]))
+                        result.append((('((%d%s%d)%s%d)%s%d=24') %(i[0],k1,i[1],k2,i[2],k3,i[3])))
+
+def cal1(c):
+    # num=init_set3(c)
+    # print ('ret.append',num  )
+
+    global  result
+    print ('pattern (a?b)?(c?d)')
+    count=0
+    for i in iter(c):
+        # print ('source array',count, i  )
+        # count=count+1
+        temp1=_cal(i[0],i[1])
+        temp2=_cal(i[2],i[3])
+        # print ('a?b',temp1 )
+        for k1 in temp1:
+            # print ('(a?b)c',temp1,temp2 )
+            for k2 in temp2:
+                temp3 =_cal(temp1[k1],temp2[k2]) 
+                for k3 in temp3:
+                    if temp3[k3]==24:
+                        count=count+1
+                        print (('============%d==============(%d%s%d)%s(%d%s%d)=24') %(count,i[0],k1,i[1],k3,i[2],k2,i[3]))
+                        result.append((('(%d%s%d)%s(%d%s%d)=24') %(i[0],k1,i[1],k3,i[2],k2,i[3])))
+
+def cal(c):
+    global  result
+    num=init_set3(c)
+    # print ('ret.append',num  )
+    result = []
+
+    cal1(num)
+    cal2(num)
+    cal3(num)
+    cal4(num)
+    cal5(num)
+
+def dump_result():
+    global  result
+
+    res1 = []
+    for i in iter(result):
+        str1=i[:-3]
+        res1.append(str1)
+        print (str1)
+
+    # print (res1)
+
+result = []
+print (result)
+print ('test1')    
+# test=[1,2,3,5]
+# cal(test)
+# test=[6,6,6,6]
+# cal(test)
+# test=[2,6,3,6]
+# cal(test)
+# test=[2,6,2,6]
+# cal(test)
+# test=[4,1,8,7]
+# cal(test)
+# test=[1,5,5,5]
+# cal(test)
+# test=[6,1,3,4]
+# cal(test)
+test=[8,2,1,3]
+cal(test)
+# test=[2,4,1,8]
+# cal(test)
+# test=[8,2,1,3]
+# cal(test)
+# test=[1,2,4,4]
+# cal(test)
+# test=[1,2,3,4]
+# cal(test)
+
+dump_result()
